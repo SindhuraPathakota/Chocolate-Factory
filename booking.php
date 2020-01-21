@@ -1,5 +1,6 @@
 
 <?php 
+session_start();
 $page_title= 'Booking';
 require_once('views/page_top.php');
 ?>
@@ -11,6 +12,6 @@ This is home page and it will contain :
 </p>
 </main>
 <?php 
-
+echo $_SESSION['sel_product_id'];
 require_once('views/page_bottom.php');
 ?>

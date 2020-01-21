@@ -2,7 +2,7 @@
 <?php 
 $page_title= 'Home';
 require_once('views/page_top.php');
-require_once('database/stuff.php');
+require_once('database/products.php');
 
 ?>
 <p>
