@@ -1,4 +1,4 @@
-
+<!-- Update Product Page -->
 <?php 
 
   if(session_status() === PHP_SESSION_NONE) {
@@ -8,19 +8,16 @@ require_once('views/page_top.php');
 require_once('database/products.php');
 $productsList = get_products();
 const PRODUCTS_LIST = 'productsList';
-if(!(array_key_exists('fn_Username',$_SESSION))){
-
-    header('Location: login.php');  
-}
 
 if(array_key_exists('productsList',$_POST)){         
     $SelectedProduct = selectedProduct();
     function selected_product() {
+        //return true;
         return array_key_exists(PRODUCTS_LIST, $_POST);
     }
 }
 
-$page_title= 'Update Product';
+$page_title= 'Order Product';
 // The different data managed for each field
 define('K_IS_VALID',                'k_is_valid');
 define('K_VALUE',                   'k_value');
@@ -119,10 +116,9 @@ if ($receiving) {
               break;
           }
       }
-      if($form_is_valid){
-          updateProduct();
-        }
-       
+      if ($form_is_valid) {
+          echo "Product Ordered Successfully.";
+      }
   
 }
 
@@ -132,12 +128,12 @@ if ($receiving) {
 <html>
 <head lang="fr">
     <meta charset="UTF-8">
-    <title>Update Products</title>
+    <title>Order Product</title>
     <link rel="stylesheet" href="views/productsListStyle.css" />
 </head>
 
 <body>
-<h2>Product Update Form</h2>
+<h2>Order Product</h2>
 <div class="form-container">
 
 <?php if(array_key_exists('productsList',$_POST)) { ?>
@@ -149,7 +145,7 @@ if ($receiving) {
         <div class="form-group <?=vld_class(PR_NAME)?> ">
             <label for="<?= PR_NAME ?>" >Product Name :</label>
             <input type="text" name="<?= PR_NAME ?>" id="<?= PR_NAME ?>"
-                   value="<?= $SelectedProduct[$i]['product_name'] ?>"
+                   value="<?= $SelectedProduct[$i]['product_name'] ?>" readonly
             />
           <?=vld_msg(PR_NAME)?> 
         
@@ -158,7 +154,7 @@ if ($receiving) {
         <div class="form-group <?=vld_class(PRICE)?> ">
             <label for="<?= PRICE ?>" >Price :</label>
             <input type="text" name="<?= PRICE ?>" id="<?= PRICE ?>"
-                   value="<?= $SelectedProduct[$i]['price'] ?>"
+                   value="<?= $SelectedProduct[$i]['price'] ?>" readonly
             />
           <?=vld_msg(PRICE)?> 
         
@@ -167,13 +163,13 @@ if ($receiving) {
         <div class="form-group <?=vld_class(QUANTITY)?> ">
             <label for="<?= QUANTITY ?>" >Quantity :</label>
             <input type="text" name="<?= QUANTITY ?>" id="<?= QUANTITY ?>"
-                   value="<?= $SelectedProduct[$i]['quantity'] ?>"
+                   value="<?= $SelectedProduct[$i]['quantity'] ?>" readonly
             />
           <?=vld_msg(PRICE)?> 
         
         </div>
         
-        <!-- ArrExpiryival date field (input text) -->
+        <!-- Expiry date field (input text) -->
         <div class="form-group <?=vld_class(FN_ARRIVAL)?> ">
             <label for="<?=FN_ARRIVAL?>">Expiry Date :</label>
             <input type="text" name="<?=FN_ARRIVAL?>" id="<?=FN_ARRIVAL?>"
@@ -182,15 +178,7 @@ if ($receiving) {
         </div>
 
         <div class="form-group">
-            <label for="likes">Likes :</label>
-            <input type="text" name="likes" id="likes"
-                   value="<?= $SelectedProduct[$i]['likes'] ?>"/>
-                   
-        </div>
-
-        <div class="form-group">
-            <input type="submit" name="updateId" value="Update Product">
-            <input type="submit" name="deletedid" value="DeleteProduct">
+            <input type="submit" name="orderId" value="Buy Product">
         </div>
         <?php } ?>
     </form>
@@ -199,10 +187,7 @@ if ($receiving) {
 <div class="form-group">
            
         <label for="<?= PR_NAME ?>" >Product Name :</label>
-        <!--<input type="text" name="<?= PR_NAME ?>" id="<?= PR_NAME ?>"
-                value="<?= $productsList[$i]['product_name']?>"
-        />
-        <?=vld_msg(PR_NAME)?>-->
+        
         <select name="productsList">  
 
 
@@ -223,6 +208,6 @@ if ($receiving) {
 </body>
 </html>
 <?php 
-/*echo $_SESSION['sel_product_id'];*/
+
 require_once('views/page_bottom.php');
 ?>

@@ -108,8 +108,9 @@ if ($receiving) {
               break;
           }
       }
-       // If form is valid, the script displays a summary or makes a redirection to another page
-       addProduct();  
+       if($form_is_valid){
+        addProduct();
+      }
 }
 ?>
 
@@ -117,7 +118,7 @@ if ($receiving) {
 <html>
 <head lang="fr">
     <meta charset="UTF-8">
-    <title>Employee Form</title>
+    <title>Add Product</title>
     <link rel="stylesheet" href="views/productsListStyle.css" />
 </head>
 

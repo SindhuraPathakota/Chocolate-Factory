@@ -25,7 +25,7 @@ elseif(array_key_exists(FN_USERNAME,$_SESSION)){
 }else{$loggedin=0;}
 
 require_once('views/page_top.php'); 
-//exit();
+
 if ($loggedin) {
     var_dump($_SESSION);
     header('Location: booking.php');  
