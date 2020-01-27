@@ -1,27 +1,15 @@
-
-<?php 
-
-  if(session_status() === PHP_SESSION_NONE) {
+<?php
+if(session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once('views/page_top.php');
 require_once('database/products.php');
-$productsList = get_products();
-const PRODUCTS_LIST = 'productsList';
+
 if(!(array_key_exists('fn_Username',$_SESSION))){
 
     header('Location: login.php');  
 }
-
-if(array_key_exists('productsList',$_POST)){         
-    $SelectedProduct = selectedProduct();
-    function selected_product() {
-        //return true;
-        return array_key_exists(PRODUCTS_LIST, $_POST);
-    }
-}
-
-$page_title= 'Update Product';
+$page_title= 'Add Product';
 // The different data managed for each field
 define('K_IS_VALID',                'k_is_valid');
 define('K_VALUE',                   'k_value');
@@ -121,10 +109,8 @@ if ($receiving) {
           }
       }
        // If form is valid, the script displays a summary or makes a redirection to another page
-       updateProduct();
-  
+       addProduct();  
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -136,19 +122,14 @@ if ($receiving) {
 </head>
 
 <body>
-<h2>Product Update Form</h2>
+<h2>Add Product</h2>
 <div class="form-container">
-
-<?php if(array_key_exists('productsList',$_POST)) { ?>
-    <form class="formulaire_employe" method="POST">
+<form class="formulaire_employe" enctype="multipart/form-data" method="POST">
         <!-- Name field (input text) -->
-        
-        <?php for($i=0;$i<count($SelectedProduct);$i++){ ?>
-            <input type="hidden" name="product_id" value="<?= $SelectedProduct[$i]['product_id']  ?>" />
         <div class="form-group <?=vld_class(PR_NAME)?> ">
             <label for="<?= PR_NAME ?>" >Product Name :</label>
             <input type="text" name="<?= PR_NAME ?>" id="<?= PR_NAME ?>"
-                   value="<?= $SelectedProduct[$i]['product_name'] ?>"
+                   value=""
             />
           <?=vld_msg(PR_NAME)?> 
         
@@ -157,7 +138,7 @@ if ($receiving) {
         <div class="form-group <?=vld_class(PRICE)?> ">
             <label for="<?= PRICE ?>" >Price :</label>
             <input type="text" name="<?= PRICE ?>" id="<?= PRICE ?>"
-                   value="<?= $SelectedProduct[$i]['price'] ?>"
+                   value=""
             />
           <?=vld_msg(PRICE)?> 
         
@@ -166,60 +147,44 @@ if ($receiving) {
         <div class="form-group <?=vld_class(QUANTITY)?> ">
             <label for="<?= QUANTITY ?>" >Quantity :</label>
             <input type="text" name="<?= QUANTITY ?>" id="<?= QUANTITY ?>"
-                   value="<?= $SelectedProduct[$i]['quantity'] ?>"
+                   value=""
             />
           <?=vld_msg(PRICE)?> 
         
         </div>
         
-        <!-- ArrExpiryival date field (input text) -->
+        <!-- Arrival date field (input text) -->
         <div class="form-group <?=vld_class(FN_ARRIVAL)?> ">
             <label for="<?=FN_ARRIVAL?>">Expiry Date :</label>
             <input type="text" name="<?=FN_ARRIVAL?>" id="<?=FN_ARRIVAL?>"
-                   value="<?= $SelectedProduct[$i]['expiry_date'] ?>" readonly/>
+                   value=""/>
                    <?=vld_msg(FN_ARRIVAL)?>
         </div>
-
-        <div class="form-group">
-            <label for="likes">Likes :</label>
-            <input type="text" name="likes" id="likes"
-                   value="<?= $SelectedProduct[$i]['likes'] ?>"/>
-                   
+        <div>
+            <label for=""></label>
+            <input type="file" name="uploaded_file"></input><br />
+            <?php 
+                if(!empty($_FILES['uploaded_file']))
+                {
+                  $path = "images/";
+                  $path = $path . basename( $_FILES['uploaded_file']['name']);
+                  if(move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $path)) {
+                    echo "The file ".  basename( $_FILES['uploaded_file']['name']). 
+                    " has been uploaded";
+                  } else{
+                      echo "There was an error uploading the file, please try again!";
+                  }
+                }
+            ?>
         </div>
 
         <div class="form-group">
-            <input type="submit" name="updateId" value="Update Product">
+            <input type="submit" name="addId" value="Add Product">
         </div>
-        <?php } ?>
     </form>
-<?php } else { ?>
-    <form method="POST">
-<div class="form-group">
-           
-        <label for="<?= PR_NAME ?>" >Product Name :</label>
-        <!--<input type="text" name="<?= PR_NAME ?>" id="<?= PR_NAME ?>"
-                value="<?= $productsList[$i]['product_name']?>"
-        />
-        <?=vld_msg(PR_NAME)?>-->
-        <select name="productsList">  
-
-
-            <?php for($i=0;$i<count($productsList);$i++){
-            $_SESSION['updatedproductid']=$productsList[$i]['product_id'];
-            ?>              
-            <option value="<?= $productsList[$i]['product_id']?>"><?= $productsList[$i]['product_name']?></option>
-            <?php }
-            ?>               
-        </select>
     </div>
-    <input type="submit" name="selectedid" value="SelectedProduct">
-</form>
-<?php } ?>
-
-</div>
 </body>
 </html>
 <?php 
-/*echo $_SESSION['sel_product_id'];*/
 require_once('views/page_bottom.php');
 ?>
