@@ -58,17 +58,21 @@
     }
 
     function updateProduct(){
-
-        if(array_key_exists('pr_name',$_POST) && array_key_exists('price',$_POST) && array_key_exists('quantity',$_POST) && array_key_exists('fn_arrival',$_POST)){
+        global $mysqli;
+        if(array_key_exists('pr_name',$_POST) && array_key_exists('price',$_POST) && array_key_exists('quantity',$_POST) && array_key_exists('fn_arrival',$_POST) && array_key_exists('selectedid',$_POST)){
             $id = (int)$_POST['product_id'];
             $name= $_POST['pr_name'];
             $price = (int)$_POST['price'];
             $quantity=(int)$_POST['quantity'];
             $date = $_POST['fn_arrival'];
             $like = $_POST['likes'];
-        }
-        global $mysqli;
-        $query_update ="UPDATE products SET product_name='$name', price=$price, quantity=$quantity, likes=$like WHERE product_id=$id";
+            $query_update ="UPDATE products SET product_name='$name', price=$price, quantity=$quantity, likes=$like WHERE product_id=$id";
+        
+        }elseif(array_key_exists('deletedid',$_POST)){
+            $id = (int)$_POST['product_id'];
+            $query_update ="DELETE from products WHERE product_id=$id";
+        
+        }  
         $mysqli-> query($query_update);
         if($mysqli->query($query_update) === true){ 
             echo "Records was updated successfully."; 
@@ -78,6 +82,7 @@
                                                 . $mysqli->error; 
         } 
         $mysqli->close(); 
+        header('Location: booking.php');
         
     }
    

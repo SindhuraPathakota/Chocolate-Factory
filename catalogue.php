@@ -19,7 +19,7 @@ if(array_key_exists('like',$_POST) || array_key_exists('dislike',$_POST)){
 <form class="formulaire_employe" method="POST">
     <?php for($i=0;$i<count($productsList);$i++){?>
     <div class="card">
-        <img src="images/choco<?php echo $i+1 ?>.jpg" alt="chocolate img" style="width:100%">
+        <img src="images/<?= $productsList[$i]['imagename'] ?>" alt="chocolate img" style="width:100%">
         <input type="hidden" name="product_id" value="<?= $productsList[$i]['product_id']  ?>" />
         <h1 class="name">Product Name : <?= $productsList[$i]['product_name']?></h1>
         <p class="price">Price : <?= $productsList[$i]['price']?>$</p>

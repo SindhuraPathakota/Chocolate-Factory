@@ -120,7 +120,6 @@ if ($receiving) {
               break;
           }
       }
-       // If form is valid, the script displays a summary or makes a redirection to another page
        updateProduct();
   
 }
@@ -189,6 +188,7 @@ if ($receiving) {
 
         <div class="form-group">
             <input type="submit" name="updateId" value="Update Product">
+            <input type="submit" name="deletedid" value="DeleteProduct">
         </div>
         <?php } ?>
     </form>
@@ -213,6 +213,7 @@ if ($receiving) {
         </select>
     </div>
     <input type="submit" name="selectedid" value="SelectedProduct">
+   
 </form>
 <?php } ?>
 
